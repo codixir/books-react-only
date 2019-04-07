@@ -1,47 +1,43 @@
 import React, { Component } from 'react';
+import './CreateBook.css';  
 
 class CreateBook extends Component {
     constructor(props) {
         super(props);
-        this.handleInputChange = this.handleInputChange.bind(this);
     }
-
-    handleInputChange(e) {        
-        this.props.book[e.target.name] = e.target.value;
-    }
-
     render() {
         return (
             <div>
-                <form onSubmit={this.props.handleSubmit}>
+                <form onSubmit={this.props.handleSubmit} ref={this.props.setRef}>  
                     <div className="form-group">
-                        <label>Title</label>
+                        <label>Title<i className="required">*</i></label>
                         <input type="text" 
                         className="form-control" 
                         placeholder="Enter Title" 
                         name="title"
-                        onChange={this.handleInputChange }
-                        />                
+                        onChange={(e) => this.props.handleInputChange(e) }
+                        />
                     </div>
                     <div className="form-group">
-                        <label>Author</label>
+                        <label>Author<i className="required">*</i></label>
                         <input type="text" 
                         className="form-control" 
                         placeholder="Enter Author"
                         name="author" 
-                        onChange={this.handleInputChange }
-                        />                
+                        onChange={(e) => this.props.handleInputChange(e) }
+                        />
                     </div>
                     <div className="form-group">
-                        <label>Year</label>
+                        <label>Year<i className="required">*</i></label>
                         <input type="text" 
                         className="form-control" 
                         placeholder="Enter Year" 
                         name="year"
-                        onChange={this.handleInputChange }
-                        />                
+                        onChange={(e) => this.props.handleInputChange(e) }
+                        />                                      
                     </div>
-                                    
+
+                {this.props.errorMessage.length ? <p className="error-message"> {this.props.errorMessage}</p> : ''}                                    
                 <button type="submit" className="btn btn-primary">Submit</button>
                 </form>
             </div>            

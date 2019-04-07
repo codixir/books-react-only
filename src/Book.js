@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 const Book = ({book}) => {
     return (
-        <tr key={book.id}>
+        <tr>
             <td>{book.id}</td>
             <td>{book.title}</td>
             <td>{book.author}</td>

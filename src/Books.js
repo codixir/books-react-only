@@ -17,7 +17,7 @@ class Books extends Component {
               {
                 this.props.books.map(book => {
                   return (
-                      <Book book={book} />               
+                      <Book key={book.id} book={book} />               
                   );
                 })
               }

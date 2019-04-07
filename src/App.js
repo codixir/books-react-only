@@ -10,6 +10,7 @@ class App extends Component {
 
     this.state = {
       books: [],
+      errorMessage: '',
       book: {    
         id: 0,    
         title: '',
@@ -19,10 +20,41 @@ class App extends Component {
     }
 
     this.state.handleSubmit = this.handleSubmit.bind(this);
+    this.state.handleInputChange = this.handleInputChange.bind(this);   
+    this.setRef = this.setRef.bind(this); 
   }
+  
+  setRef(input) {
+    this.childRef = input;
+  }
+
+  handleValidation() {
+    let errors = {};
+
+    for (let key in this.state.book) {      
+      if (this.state.book.hasOwnProperty(key)) {
+        if (key != 'id' && !this.state.book[key]) {        
+          if (!errors[key]) {
+            errors[key] = 'invalid';
+          }
+        } else {        
+          delete errors[key];
+        }
+      }      
+    }
+
+    return window.Object.keys(errors).length;  
+  }  
 
   handleSubmit(e) {
     e.preventDefault();
+
+    if (this.handleValidation() > 0) {
+      this.setState({errorMessage: 'Enter all required fields.'});
+      return;
+    }
+
+    this.setState({errorMessage: ''});
 
     this.state.book.id = this.state.books.length + 1;
     this.setState({
@@ -33,7 +65,20 @@ class App extends Component {
       }
     }); 
 
-    this.setState({books: this.state.books.concat(this.state.book)});
+    this.setState({
+      books: this.state.books.concat(this.state.book),
+      book: { 
+        title: '',
+        author: '',
+        year: '',
+      }
+    });    
+
+    this.childRef.reset();
+  }
+
+  handleInputChange(e) {      
+    this.state.book[e.target.name] = e.target.value;
   }
 
   componentWillMount() {
@@ -47,7 +92,10 @@ class App extends Component {
           <CreateBook 
               books={this.state.books}
               book={this.state.book }
+              errorMessage = {this.state.errorMessage}
               handleSubmit={this.state.handleSubmit}
+              handleInputChange={this.state.handleInputChange}
+              setRef={this.setRef}
           />
           <br></br><hr></hr>          
           <Books books={this.state.books} />
