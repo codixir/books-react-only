@@ -1,25 +1,57 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Books from './Books';
+import CreateBook from './CreateBook';
+import { books } from './data'
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component {
-  render() {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      books: [],
+      book: {    
+        id: 0,    
+        title: '',
+        author: '',
+        year: '',
+      } 
+    }
+
+    this.state.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+
+    this.state.book.id = this.state.books.length + 1;
+    this.setState({
+      book: { 
+        title: this.state.book.title,
+        author: this.state.book.author,
+        year: this.state.book.year,
+      }
+    }); 
+
+    this.setState({books: this.state.books.concat(this.state.book)});
+  }
+
+  componentWillMount() {
+    this.setState({books: books})
+  }
+
+  render() {    
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <div className="container">
+          <CreateBook 
+              books={this.state.books}
+              book={this.state.book }
+              handleSubmit={this.state.handleSubmit}
+          />
+          <br></br><hr></hr>          
+          <Books books={this.state.books} />
+        </div>        
       </div>
     );
   }
