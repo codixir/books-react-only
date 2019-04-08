@@ -11,13 +11,19 @@ class Books extends Component {
                   <th>Title</th>
                   <th>Author</th>
                   <th>Year</th>
+                  <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
               {
                 this.props.books.map(book => {
                   return (
-                      <Book key={book.id} book={book} />               
+                      <Book 
+                        key={book.id} 
+                        book={book} 
+                        handleDelete={this.props.handleDelete}
+                        handleEdit={this.props.handleEdit}
+                      />               
                   );
                 })
               }
